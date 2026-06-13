@@ -6,6 +6,11 @@ public class ArrayList<T> implements List<T> {
     private Object[] elements;
     private int size;
 
+    public ArrayList() {
+        elements = new Object[10];
+        size = 0;
+    }
+
     @Override
     public void add(T value) {
         if (size == elements.length) {
