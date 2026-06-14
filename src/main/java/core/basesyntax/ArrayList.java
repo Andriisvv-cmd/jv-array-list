@@ -3,11 +3,31 @@ package core.basesyntax;
 import java.util.NoSuchElementException;
 
 public class ArrayList<T> implements List<T> {
+    private static final int DEFAULT_CAPACITY = 10;
+    private static final float GROWTH_FACTOR = 1.5f;
     private Object[] elements;
     private int size;
 
+    private void ensureCapacity() {
+        Object[] newArray = new Object[(int) (elements.length * GROWTH_FACTOR)];
+        System.arraycopy(elements, 0, newArray, 0, size);
+        elements = newArray;
+    }
+
+    private void checkIndex(int index) {
+        if (index < 0 || index >= size) {
+            throw new ArrayListIndexOutOfBoundsException("Index: " + index + ", Size: " + size);
+        }
+    }
+
+    private void checkIndexForAdd(int index) {
+        if (index < 0 || index > size) {
+            throw new ArrayListIndexOutOfBoundsException("Index " + index + ", Size: " + size);
+        }
+    }
+
     public ArrayList() {
-        elements = new Object[10];
+        elements = new Object[DEFAULT_CAPACITY];
         size = 0;
     }
 
@@ -26,9 +46,7 @@ public class ArrayList<T> implements List<T> {
 
     @Override
     public void add(T value, int index) {
-        if (index < 0 || index > size) {
-            throw new ArrayListIndexOutOfBoundsException("Error");
-        }
+        checkIndexForAdd(index);
         if (size == elements.length) {
             Object[] newArray = new Object[(int) (elements.length * 1.5)];
             for (int i = 0; i < elements.length; i++) {
@@ -52,17 +70,13 @@ public class ArrayList<T> implements List<T> {
 
     @Override
     public T get(int index) {
-        if (index < 0 || index >= size) {
-            throw new ArrayListIndexOutOfBoundsException("Error");
-        }
+        checkIndex(index);
         return (T) elements[index];
     }
 
     @Override
     public T set(T value, int index) {
-        if (index < 0 || index >= size) {
-            throw new ArrayListIndexOutOfBoundsException("Error");
-        }
+        checkIndex(index);
         T oldValue = (T) elements[index];
         elements[index] = value;
         return oldValue;
@@ -70,9 +84,7 @@ public class ArrayList<T> implements List<T> {
 
     @Override
     public T remove(int index) {
-        if (index < 0 || index >= size) {
-            throw new ArrayListIndexOutOfBoundsException("Error");
-        }
+        checkIndex(index);
         final T oldValue = (T) elements[index];
         for (int i = index; i < size - 1; i++) {
             elements[i] = elements[i + 1];
@@ -105,7 +117,7 @@ public class ArrayList<T> implements List<T> {
                 return (T) oldValue;
             }
         }
-        throw new NoSuchElementException("Error");
+        throw new NoSuchElementException("Element " + element + " not found");
     }
 
     @Override
