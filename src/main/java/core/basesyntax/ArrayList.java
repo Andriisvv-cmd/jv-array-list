@@ -74,7 +74,7 @@ public class ArrayList<T> implements List<T> {
             throw new ArrayListIndexOutOfBoundsException("Error");
         }
         final T oldValue = (T) elements[index];
-        for (int i = index; i < size; i++) {
+        for (int i = index; i < size - 1; i++) {
             elements[i] = elements[i + 1];
         }
         elements[size - 1] = null;
