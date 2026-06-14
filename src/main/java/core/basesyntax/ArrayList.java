@@ -8,6 +8,11 @@ public class ArrayList<T> implements List<T> {
     private Object[] elements;
     private int size;
 
+    public ArrayList() {
+        elements = new Object[DEFAULT_CAPACITY];
+        size = 0;
+    }
+
     private void ensureCapacity() {
         Object[] newArray = new Object[(int) (elements.length * GROWTH_FACTOR)];
         System.arraycopy(elements, 0, newArray, 0, size);
@@ -24,11 +29,6 @@ public class ArrayList<T> implements List<T> {
         if (index < 0 || index > size) {
             throw new ArrayListIndexOutOfBoundsException("Index " + index + ", Size: " + size);
         }
-    }
-
-    public ArrayList() {
-        elements = new Object[DEFAULT_CAPACITY];
-        size = 0;
     }
 
     @Override
